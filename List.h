@@ -11,7 +11,7 @@ typedef enum ErrorCode
 	OUT_OF_MEMORY_EXCEPTION = -1,
 	LIST_EMPTY_EXCEPTION = -2,
 	INDEX_OUT_OF_RANGE_EXCEPTION = -3,
-}ErrorCode;
+} ErrorCode;
 
 typedef struct Node {
 	char data;
@@ -21,9 +21,9 @@ typedef struct Node {
 typedef struct List {
 	Node *HEAD;
 	unsigned count;
-} List;
+} List, BigInt;
 
-List* string_to_list(char*);						/*returns the specified string a list of chars*/
+List* string_to_list(char*, int start_index);						/*returns the specified string a list of chars*/
 List* create_list(unsigned int size);				/*creates a list of the specified size (can be zero)
 													and returns the list of that size with all values
 													initialized to 0x00*/
@@ -34,7 +34,7 @@ char pop_tail(List*);                               /* returns last value of the
 Node* get_by_index(List*, int index);				/*returns the pointer to the specified Node*/
 int insert(List*, int, char);                       /* insert entry by index [1, n] */
 int delete_by_index(List*, int);                    /* delete entry by index [1, n] */
-char* to_string(List*);								/*converts a given List to a c-style string*/
+char* list_to_string(List*, char optional);			/*converts a given List to a c-style string*/
 void free_list(List*);                              /* free memory and dissolve the list */
 void print_error(ErrorCode code);					/*prints error according the the error code*/
 List* get_longer(List* a, List* b, int* lenght);	/*returns the longer list of the two and it's lenght*/

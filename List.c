@@ -10,12 +10,14 @@ List* create_list(unsigned int size) {
 	return l;
 }
 
-List* string_to_list(char* str)
+List* string_to_list(char* str, int start_index)
 {
 	List* l = create_list(0);
 	int len = strlen(str);
 	if (str[len-1] == '\n') len--;
-	for (int i = 0; i < len; i++)
+	if (start_index >= len)
+		print_error(INDEX_OUT_OF_RANGE_EXCEPTION);
+	for (int i = start_index; i < len; i++)
 	{
 		print_error(push_front(l, str[i] - 0x30));
 	}
@@ -118,10 +120,17 @@ int delete_by_index(List *list, int index) {
 	return ALL_GOOD;
 }
 
-char* to_string (List* list) {
-	char* str = malloc((list->count + 1) * sizeof(char));
-	if (str == NULL) return OUT_OF_MEMORY_EXCEPTION;
+char* list_to_string (List* list, char optional) {
+	char* str;
 	int i = 0;
+	if (optional != '-') 
+		str = malloc((list->count + 1) * sizeof(char));
+	else {
+		str = malloc((list->count + 2) * sizeof(char));
+		i++;
+		str[0] = optional;
+	}
+	if (str == NULL) return OUT_OF_MEMORY_EXCEPTION;
 	Node **HEAD = &(list->HEAD);
 	while (*HEAD)
 	{
