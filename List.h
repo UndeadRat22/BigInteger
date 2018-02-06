@@ -36,4 +36,6 @@ int insert(List*, int, char);                       /* insert entry by index [1,
 int delete_by_index(List*, int);                    /* delete entry by index [1, n] */
 char* to_string(List*);								/*converts a given List to a c-style string*/
 void free_list(List*);                              /* free memory and dissolve the list */
-void printError(ErrorCode code);
+void print_error(ErrorCode code);					/*prints error according the the error code*/
+List* get_longer(List* a, List* b, int* lenght);	/*returns the longer list of the two and it's lenght*/
+List* get_shorter(List* a, List* b, int* lenght);	/*returns the shorter list of the two and it's lenght*/

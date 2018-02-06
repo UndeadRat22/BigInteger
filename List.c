@@ -130,7 +130,7 @@ char* to_string (List* list) {
 		i++;
 	}
 	str[i] = '\0';
-	return _strrev(str);
+	return str;
 }
 
 void free_list(List *list) {
@@ -143,24 +143,36 @@ void free_list(List *list) {
 	free(list);
 }
 
-void PrintError(ErrorCode code) 
+void print_error(ErrorCode code) 
 {
 	switch (code)
 	{
 	case OUT_OF_MEMORY_EXCEPTION:
-		_stderr("Out of memory !\n");
+		fprintf(stderr, "Out of memory !\n");
 		exit(OUT_OF_MEMORY_EXCEPTION);
 
 	case LIST_EMPTY_EXCEPTION:
-		_stderr("List Empty!\n");
+		fprintf(stderr, "List Empty !\n");
 		break;
 
 	case INDEX_OUT_OF_RANGE_EXCEPTION:
-		_stderr("Index out of range!\n");
+		fprintf(stderr, "Index out of range !\n");
 		break;
 	case ALL_GOOD:
 	default:
 		break;
 	}
 	return;
+}
+
+List* get_longer(List* a, List* b, int* lenght)
+{
+	*lenght = MAX(a->count, b->count);
+	return (a->count == *lenght) ? a : b;
+}
+
+List* get_shorter(List* a, List* b, int* lenght)
+{
+	*lenght = MIN(a->count, b->count);
+	return (b->count == *lenght) ? b : a;
 }
