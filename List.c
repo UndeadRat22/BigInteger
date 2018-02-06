@@ -4,6 +4,18 @@ List create_list() {
 	return (List) { NULL, 0 };
 }
 
+List* string_to_list(char* str)
+{
+	List l = create_list();
+	int len = strlen(str);
+	if (str[len-1] == '\n') len--;
+	for (int i = len; i >= 0; i--)
+	{
+		push_front(&l, str[i]);
+	}
+	return &l;
+}
+
 int push_front(List *list, char data) {
 	Node *new = malloc(sizeof(Node));
 	if (!new) 

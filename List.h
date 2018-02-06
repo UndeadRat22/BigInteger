@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define OUT_OF_MEMORY_EXCEPTION -1;
 #define LIST_EMPTY_EXCEPTION -2;
@@ -15,6 +16,7 @@ typedef struct List {
 	unsigned count;
 } List;
 
+List string_to_list(char*);							/*returns the specified string a list of chars*/
 List create_list();
 int push_front(List*, char);                        /* push entry at the front of list in O(1) time */
 int push_back(List*, char);                         /* push entry at the end of list in O(n) time */
