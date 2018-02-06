@@ -1,13 +1,15 @@
 #include "List.h"
 
 List* create_list(unsigned int size) {
-	List l = { NULL, 0 };
+	List* l = malloc(sizeof(List));
+	l->count = 0;
+	l->HEAD = NULL;
 	while (size > 0)
 	{
-		push_front(&l, 0);
+		push_front(l, 0);
 		size--;
 	}
-	return &l;
+	return l;
 }
 
 List* string_to_list(char* str)
@@ -118,17 +120,19 @@ int delete_by_index(List *list, int index) {
 	return 0;
 }
 
-char* to_string (List list) {
-	Node *HEAD = list.HEAD;
-	char* str = calloc(list.count + 1, 1);
-	if (!str) return OUT_OF_MEMORY_EXCEPTION;
+char* to_string (List* list) {
+	char* str = malloc((list->count + 1) * sizeof(char));
+	if (str == NULL) return OUT_OF_MEMORY_EXCEPTION;
 	int i = 0;
-	while (HEAD) {
-		str[i] = HEAD->data + 0x30;
-		HEAD = HEAD->next;
+	Node **HEAD = &(list->HEAD);
+	while (*HEAD)
+	{
+		str[i] = (*HEAD)->data + 0x30;
+		HEAD = &(*HEAD)->next;
 		i++;
 	}
-	return str;
+	str[i] = '\0';
+	return _strrev(str);
 }
 
 void free_list(List *list) {
