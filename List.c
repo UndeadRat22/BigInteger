@@ -9,9 +9,9 @@ List* string_to_list(char* str)
 	List l = create_list();
 	int len = strlen(str);
 	if (str[len-1] == '\n') len--;
-	for (int i = len; i >= 0; i--)
+	for (int i = 0; i <len; i++)
 	{
-		push_front(&l, str[i]);
+		push_front(&l, str[i] - 0x30);
 	}
 	return &l;
 }
@@ -62,6 +62,22 @@ char pop_tail(List *list) {
 	*HEAD = NULL;
 	list->count--;
 	return value;
+}
+
+Node* get_by_index(List* list, int index) 
+{
+	if (list->count - 1 < index)
+		return INDEX_OUT_OF_RANGE;
+	Node* result = list->HEAD;
+	int i = 0;
+	while (result)
+	{
+		if (i == index)
+			return result;
+		i++;
+		result = result->next;
+	}
+	return INDEX_OUT_OF_RANGE;
 }
 
 int insert(List *list, int index, char data) {
