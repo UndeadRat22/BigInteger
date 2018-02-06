@@ -5,9 +5,13 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-#define OUT_OF_MEMORY_EXCEPTION -1;
-#define LIST_EMPTY_EXCEPTION -2;
-#define INDEX_OUT_OF_RANGE -3;
+typedef enum ErrorCode
+{
+	ALL_GOOD = 0,
+	OUT_OF_MEMORY_EXCEPTION = -1,
+	LIST_EMPTY_EXCEPTION = -2,
+	INDEX_OUT_OF_RANGE_EXCEPTION = -3,
+}ErrorCode;
 
 typedef struct Node {
 	char data;
@@ -32,3 +36,4 @@ int insert(List*, int, char);                       /* insert entry by index [1,
 int delete_by_index(List*, int);                    /* delete entry by index [1, n] */
 char* to_string(List*);								/*converts a given List to a c-style string*/
 void free_list(List*);                              /* free memory and dissolve the list */
+void printError(ErrorCode code);

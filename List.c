@@ -1,12 +1,10 @@
 #include "List.h"
 
 List* create_list(unsigned int size) {
-	List* l = malloc(sizeof(List));
-	l->count = 0;
-	l->HEAD = NULL;
+	List* l = calloc(1, sizeof(List));
 	while (size > 0)
 	{
-		push_front(l, 0);
+		print_error(push_front(l, 0));
 		size--;
 	}
 	return l;
@@ -19,7 +17,7 @@ List* string_to_list(char* str)
 	if (str[len-1] == '\n') len--;
 	for (int i = 0; i < len; i++)
 	{
-		push_front(l, str[i] - 0x30);
+		print_error(push_front(l, str[i] - 0x30));
 	}
 	return l;
 }
@@ -32,7 +30,7 @@ int push_front(List *list, char data) {
 	new->next = list->HEAD;
 	list->HEAD = new;
 	list->count++;
-	return 1;
+	return ALL_GOOD;
 }
 
 int push_back(List *list, char data) {
@@ -45,7 +43,7 @@ int push_back(List *list, char data) {
 	(*HEAD)->data = data;
 	(*HEAD)->next = NULL;
 	list->count++;
-	return 1;
+	return ALL_GOOD;
 }
 
 char pop_head(List *list) {
@@ -77,7 +75,7 @@ Node* get_by_index(List* list, int index)
 	Node* result = list->HEAD;
 	int i = 0;
 	if (list->count - 1 < index)
-		return INDEX_OUT_OF_RANGE;
+		return INDEX_OUT_OF_RANGE_EXCEPTION;
 	while (i != index && result)
 	{
 		result = result->next;
@@ -85,7 +83,7 @@ Node* get_by_index(List* list, int index)
 	}
 	if (index == i)
 		return result;
-	return INDEX_OUT_OF_RANGE;
+	return INDEX_OUT_OF_RANGE_EXCEPTION;
 }
 
 int insert(List *list, int index, char data) {
@@ -95,14 +93,14 @@ int insert(List *list, int index, char data) {
 		HEAD = &(*HEAD)->next;
 		i++;
 	}
-	if (!(*HEAD)) return INDEX_OUT_OF_RANGE;
+	if (!(*HEAD)) return INDEX_OUT_OF_RANGE_EXCEPTION;
 	new = malloc(sizeof(Node));
 	if (!new) return OUT_OF_MEMORY_EXCEPTION;
 	new->data = data;
 	new->next = *HEAD;
 	*HEAD = new;
 	list->count++;
-	return 1;
+	return ALL_GOOD;
 }
 
 int delete_by_index(List *list, int index) {
@@ -112,12 +110,12 @@ int delete_by_index(List *list, int index) {
 		HEAD = &(*HEAD)->next;
 		i++;
 	}
-	if (!(*HEAD)) return INDEX_OUT_OF_RANGE;
+	if (!(*HEAD)) return INDEX_OUT_OF_RANGE_EXCEPTION;
 	tmp = *HEAD;
 	*HEAD = (*HEAD)->next;
 	list->count--;
 	free(tmp);
-	return 0;
+	return ALL_GOOD;
 }
 
 char* to_string (List* list) {
@@ -143,4 +141,26 @@ void free_list(List *list) {
 		head = tmp;
 	}
 	free(list);
+}
+
+void PrintError(ErrorCode code) 
+{
+	switch (code)
+	{
+	case OUT_OF_MEMORY_EXCEPTION:
+		_stderr("Out of memory !\n");
+		exit(OUT_OF_MEMORY_EXCEPTION);
+
+	case LIST_EMPTY_EXCEPTION:
+		_stderr("List Empty!\n");
+		break;
+
+	case INDEX_OUT_OF_RANGE_EXCEPTION:
+		_stderr("Index out of range!\n");
+		break;
+	case ALL_GOOD:
+	default:
+		break;
+	}
+	return;
 }
