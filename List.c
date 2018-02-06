@@ -1,19 +1,25 @@
 #include "List.h"
 
-List create_list() {
-	return (List) { NULL, 0 };
+List* create_list(unsigned int size) {
+	List l = { NULL, 0 };
+	while (size > 0)
+	{
+		push_front(&l, 0);
+		size--;
+	}
+	return &l;
 }
 
 List* string_to_list(char* str)
 {
-	List l = create_list();
+	List* l = create_list(0);
 	int len = strlen(str);
 	if (str[len-1] == '\n') len--;
-	for (int i = 0; i <len; i++)
+	for (int i = 0; i < len; i++)
 	{
-		push_front(&l, str[i] - 0x30);
+		push_front(l, str[i] - 0x30);
 	}
-	return &l;
+	return l;
 }
 
 int push_front(List *list, char data) {
@@ -64,19 +70,19 @@ char pop_tail(List *list) {
 	return value;
 }
 
-Node* get_by_index(List* list, int index) 
+Node* get_by_index(List* list, int index)
 {
-	if (list->count - 1 < index)
-		return INDEX_OUT_OF_RANGE;
 	Node* result = list->HEAD;
 	int i = 0;
-	while (result)
+	if (list->count - 1 < index)
+		return INDEX_OUT_OF_RANGE;
+	while (i != index && result)
 	{
-		if (i == index)
-			return result;
-		i++;
 		result = result->next;
+		i++;
 	}
+	if (index == i)
+		return result;
 	return INDEX_OUT_OF_RANGE;
 }
 
