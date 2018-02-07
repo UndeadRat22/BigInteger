@@ -5,8 +5,7 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-typedef enum ErrorCode
-{
+typedef enum {
 	ALL_GOOD = 0,
 	OUT_OF_MEMORY_EXCEPTION = -1,
 	LIST_EMPTY_EXCEPTION = -2,
@@ -23,7 +22,7 @@ typedef struct List {
 	unsigned count;
 } List;
 
-List* string_to_list(char*, int start_index);		/*returns the specified string a list of chars*/
+List* string_to_list(char*);		/*returns the specified string a list of chars*/
 List* create_list(unsigned int size);				/*creates a list of the specified size (can be zero)
 													and returns the list of that size with all values
 													initialized to 0x00*/

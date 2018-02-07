@@ -3,7 +3,7 @@
 
 bint bint_cpy(bint source)
 {
-	return (bint) { list_cpy(source.list), source.sign};
+	return (bint) {list_cpy(source.list), source.sign};
 }
 
 bint list_to_bint(List* list, Sign sign)
@@ -20,12 +20,12 @@ bint string_to_bint(char* string)
 	if (string[0] == '-')
 	{
 		bigint.sign = negative;
-		bigint.list = string_to_list(string, 1);
+		bigint.list = string_to_list(string+1);
 	}
 	else
 	{
 		bigint.sign = positive;
-		bigint.list = string_to_list(string, 0);
+		bigint.list = string_to_list(string);
 	}
 	return bigint;
 }
@@ -33,8 +33,8 @@ bint string_to_bint(char* string)
 char* bint_to_string(bint biginteger)
 {
 	if (biginteger.sign == positive)
-	return list_to_string(biginteger.list, 0);
-	else return list_to_string(biginteger.list, '-');
+	return list_to_string(reverse_list(biginteger.list), 0);
+	else return list_to_string(reverse_list(biginteger.list), '-');
 }
 
 
@@ -45,9 +45,14 @@ bint bint_add(bint a, bint b)
 		s = positive;
 	else if (b.sign == negative && a.sign == negative)
 		s = negative;
-	else if (a.sign == negative)
+	else if (a.sign == negative) {          /* kai paduodam i sub, du minusai pavirsta pliusu, todel keiciam neigiamo sk. zenkla */
+        a.sign = positive;
 		return bint_sub(b, a);
-	else return bint_sub(a, b);
+    }
+	else {                                  /* b.sign == negative */
+        b.sign = positive;                  
+        return bint_sub(a, b);
+    }
 	
 	List* result = create_list(0);
 	List *shorter, *longer;
@@ -86,9 +91,57 @@ bint bint_add(bint a, bint b)
 	}
 	return list_to_bint(result, s);
 }
+
 bint bint_sub(bint a, bint b)
 {
-	return string_to_bint("0");
+	int i = 0;
+	bint result = { create_list(0), 0 };
+	if (a.sign != b.sign) {										// a-(-b) = a+b arba -a-b = -(a+b)
+		b.sign = a.sign ? negative : positive;
+		return bint_add(a, b);
+	}
+	/* jei a < b, tai skaiciuojam principu: a-b = -(b-a) */
+	if (bint_equal(a, b))
+		return string_to_bint("0");
+	if (bint_greater_than(a, b)) {
+		bool carry = false;
+		Node *head1 = a.list->HEAD, *head2 = b.list->HEAD;
+		while (head1 && head2) {
+			if (carry) {
+				head1->data--;
+				carry = false;
+			}
+			int tmp = head1->data - head2->data;
+			if (tmp < 0) {
+				carry = true;
+				tmp += 10;
+			}
+			push_back(result.list, tmp);
+			head1 = head1->next;
+			head2 = head2->next;
+			i++;
+		}
+		if (carry) {
+			head1->data--;
+			for (; i < a.list->count; i++) {
+				push_back(result.list, head1->data);
+				head1 = head1->next;
+			}
+			/* tikrinam, ar skaiciaus kaireje nera nuliu, tam viso reik reversint 2 kartus */
+			List *reversed = reverse_list(result.list);
+			Node *curr = reversed->HEAD;
+			while (curr->data == 0 && curr) {
+				pop_head(reversed);
+				curr = curr->next;
+			}
+			result.list = reverse_list(result.list);
+		}
+		else {
+			result = bint_sub(b, a);
+			result.sign = negative;
+		}
+		return result;
+	}
 }
 
 bint bint_mul(bint a, bint b)
@@ -151,6 +204,40 @@ mtable get_table(bint val)
 		}
 	}
 	return table;
+}
+
+bool bint_equal(bint a, bint b) {
+	Node *head1=a.list->HEAD, *head2=b.list->HEAD;
+	if (a.list->count != b.list->count)
+		return false;
+	while (head1 && head2) {
+		if (head1->data != head2->data)
+			return false;
+		head1 = head1->next;
+		head2 = head2->next;
+	}
+	return true;
+}
+
+bool bint_greater_than(bint a, bint b) {
+	Node *head1=NULL, *head2=NULL;
+	if (a.list->count < b.list->count)
+		return false;
+		else if (a.list->count > b.list->count)
+			return true;
+	a.list = reverse_list(a.list);
+	b.list = reverse_list(b.list);
+	head1 = a.list->HEAD;
+	head2 = b.list->HEAD;
+	while (head1 && head2) {
+		if (head1->data > head2->data)
+			return true;
+			else if (head1->data < head2->data)
+				return false;
+		head1 = head1->next;
+		head2 = head2->next;
+	}
+	return false;
 }
 
 void print_table(mtable table) 

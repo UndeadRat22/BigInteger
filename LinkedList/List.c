@@ -10,14 +10,12 @@ List* create_list(unsigned int size) {
 	return l;
 }
 
-List* string_to_list(char* str, int start_index)
+List* string_to_list(char* str)
 {
 	List* l = create_list(0);
 	int len = strlen(str);
 	if (str[len - 1] == '\n') len--;
-	if (start_index >= len)
-		print_error(INDEX_OUT_OF_RANGE_EXCEPTION);
-	for (int i = start_index; i < len; i++)
+	for (int i=0; i<len; i++)
 	{
 		print_error(push_front(l, str[i] - 0x30));
 	}
@@ -214,6 +212,6 @@ List* reverse_list(List *list)
 		new_head = head;
 		head = next;
 	}
-	list->HEAD = head;
+	list->HEAD = new_head;
 	return list;
 }
