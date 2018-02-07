@@ -22,7 +22,7 @@ typedef struct MultiplicationTable
 
 
 bint string_to_bint(char* );
-char* big_integer_to_string(bint);
+char* bint_to_string(bint);
 
 bint bint_add(bint, bint);	/* a + b*/
 bint bint_sub(bint, bint);	/* a - b*/
@@ -32,3 +32,4 @@ mtable get_table(bint);		/* returns the big integer multiplied by 0, 1, 2, ... 9
 int is_zero(bint);						/* checks and returs 1 if the given bint is zero
 												   else returns 0*/
 Sign div_mult_sign(Sign, Sign);					/*returns what sign should the new bint have when doing division or multiplication*/
+void print_table(mtable);	/*debug for table values*/

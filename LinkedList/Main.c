@@ -8,7 +8,9 @@ void main()
 	bint b1 = string_to_bint(a);
 	bint b2 = string_to_bint(b);
 
-	printf("%s\n", big_integer_to_string(bint_add(b1, b2)));
+	print_table(get_table(b1));
+
+	printf("%s\n", bint_to_string(bint_add(b1, b2)));
 
 	return;
 }

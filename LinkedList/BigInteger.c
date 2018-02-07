@@ -25,7 +25,7 @@ bint string_to_bint(char* string)
 	return bigint;
 }
 
-char* big_integer_to_string(bint biginteger)
+char* bint_to_string(bint biginteger)
 {
 	if (biginteger.sign == positive)
 	return list_to_string(biginteger.list, 0);
@@ -94,8 +94,6 @@ bint bint_mul(bint a, bint b)
 	Sign s = div_mult_sign(a.sign, b.sign);
 }
 
-
-
 int is_zero(bint val)
 {
 	Node* head = val.list->HEAD;
@@ -115,5 +113,26 @@ Sign div_mult_sign(Sign a, Sign b)
 
 mtable get_table(bint val)
 {
+	int val_lenght = val.list->count;
 	mtable table;
+	table.values[0] = list_to_bint(create_list(val.list->count), val.sign);
+	table.values[1] = val;
+	int i, j;
+	for (int i = 2; i < 10; i++) 
+	{
+		table.values[i] = table.values[0];
+		for (int j = 0; j < i; j++)
+		{
+			table.values[i] = bint_add(table.values[i], val);
+		}
+	}
+	return table;
+}
+
+void print_table(mtable table) 
+{
+	for (int i = 0; i < 10; i++) 
+	{
+		printf("%s\n", _strrev(bint_to_string(table.values[i])));
+	}
 }
