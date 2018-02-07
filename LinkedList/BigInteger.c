@@ -1,9 +1,8 @@
 #include "BigInteger.h"
-#include <stdio.h>
 
 bint bint_cpy(bint source)
 {
-	return (bint) {list_cpy(source.list), source.sign};
+	return (bint) { list_cpy(source.list), source.sign };
 }
 
 bint list_to_bint(List* list, Sign sign)
@@ -20,7 +19,7 @@ bint string_to_bint(char* string)
 	if (string[0] == '-')
 	{
 		bigint.sign = negative;
-		bigint.list = string_to_list(string+1);
+		bigint.list = string_to_list(string + 1);
 	}
 	else
 	{
@@ -33,7 +32,7 @@ bint string_to_bint(char* string)
 char* bint_to_string(bint biginteger)
 {
 	if (biginteger.sign == positive)
-	return list_to_string(reverse_list(biginteger.list), 0);
+		return list_to_string(reverse_list(biginteger.list), 0);
 	else return list_to_string(reverse_list(biginteger.list), '-');
 }
 
@@ -46,18 +45,18 @@ bint bint_add(bint a, bint b)
 	else if (b.sign == negative && a.sign == negative)
 		s = negative;
 	else if (a.sign == negative) {          /* kai paduodam i sub, du minusai pavirsta pliusu, todel keiciam neigiamo sk. zenkla */
-        a.sign = positive;
+		a.sign = positive;
 		return bint_sub(b, a);
-    }
+	}
 	else {                                  /* b.sign == negative */
-        b.sign = positive;                  
-        return bint_sub(a, b);
-    }
-	
+		b.sign = positive;
+		return bint_sub(a, b);
+	}
+
 	List* result = create_list(0);
 	List *shorter, *longer;
 	int min, max;
-	if (a.list->count == b.list ->count)
+	if (a.list->count == b.list->count)
 	{
 		min = a.list->count;
 		max = min;
@@ -106,42 +105,44 @@ bint bint_sub(bint a, bint b)
 	if (bint_greater_than(a, b)) {
 		bool carry = false;
 		Node *head1 = a.list->HEAD, *head2 = b.list->HEAD;
-		while (head1 && head2) {
+		while (head1) {
+			int tmp;
 			if (carry) {
 				head1->data--;
 				carry = false;
 			}
-			int tmp = head1->data - head2->data;
+			if (head2)
+				tmp = head1->data - head2->data;
+			else tmp = head1->data;
 			if (tmp < 0) {
 				carry = true;
 				tmp += 10;
 			}
 			push_back(result.list, tmp);
 			head1 = head1->next;
-			head2 = head2->next;
+			if (head2)
+				head2 = head2->next;
 			i++;
 		}
-		if (carry) {
-			head1->data--;
-			for (; i < a.list->count; i++) {
-				push_back(result.list, head1->data);
-				head1 = head1->next;
-			}
-			/* tikrinam, ar skaiciaus kaireje nera nuliu, tam viso reik reversint 2 kartus */
-			List *reversed = reverse_list(result.list);
-			Node *curr = reversed->HEAD;
-			while (curr->data == 0 && curr) {
-				pop_head(reversed);
-				curr = curr->next;
-			}
-			result.list = reverse_list(result.list);
+
+		for (; i<a.list->count; i++) {
+			push_back(result.list, head1->data);
+			head1 = head1->next;
 		}
-		else {
-			result = bint_sub(b, a);
-			result.sign = negative;
+		/* tikrinam, ar skaiciaus kaireje nera nuliu, tam viso reik reversint 2 kartus */
+		List *reversed = reverse_list(result.list);
+		Node *curr = reversed->HEAD;
+		while (curr->data == 0 && curr) {
+			pop_head(reversed);
+			curr = curr->next;
 		}
-		return result;
+		result.list = reverse_list(result.list);
 	}
+	else {
+		result = bint_sub(b, a);
+		result.sign = negative;
+	}
+	return result;
 }
 
 bint bint_mul(bint a, bint b)
@@ -150,12 +151,12 @@ bint bint_mul(bint a, bint b)
 		return string_to_bint("0");
 	Sign s = div_mult_sign(a.sign, b.sign);
 	mtable t = get_table(a);
-	
-	bint result = {create_list(0), s};
+
+	bint result = { create_list(0), s };
 
 	int i;
-	
-	for (i = 0; i < b.list->count; i++) 
+
+	for (i = 0; i < b.list->count; i++)
 	{
 		bint value = bint_cpy(t.values[get_by_index(b.list, i)->data]);
 		value.sign = s;
@@ -195,7 +196,7 @@ mtable get_table(bint val)
 	table.values[0] = list_to_bint(create_list(val.list->count), val.sign);
 	table.values[1] = bint_cpy(val);
 	int i, j;
-	for (int i = 2; i < 10; i++) 
+	for (int i = 2; i < 10; i++)
 	{
 		table.values[i] = bint_cpy(val);
 		for (int j = 0; j < i - 1; j++)
@@ -207,7 +208,7 @@ mtable get_table(bint val)
 }
 
 bool bint_equal(bint a, bint b) {
-	Node *head1=a.list->HEAD, *head2=b.list->HEAD;
+	Node *head1 = a.list->HEAD, *head2 = b.list->HEAD;
 	if (a.list->count != b.list->count)
 		return false;
 	while (head1 && head2) {
@@ -220,11 +221,11 @@ bool bint_equal(bint a, bint b) {
 }
 
 bool bint_greater_than(bint a, bint b) {
-	Node *head1=NULL, *head2=NULL;
+	Node *head1 = NULL, *head2 = NULL;
 	if (a.list->count < b.list->count)
 		return false;
-		else if (a.list->count > b.list->count)
-			return true;
+	else if (a.list->count > b.list->count)
+		return true;
 	a.list = reverse_list(a.list);
 	b.list = reverse_list(b.list);
 	head1 = a.list->HEAD;
@@ -232,18 +233,18 @@ bool bint_greater_than(bint a, bint b) {
 	while (head1 && head2) {
 		if (head1->data > head2->data)
 			return true;
-			else if (head1->data < head2->data)
-				return false;
+		else if (head1->data < head2->data)
+			return false;
 		head1 = head1->next;
 		head2 = head2->next;
 	}
 	return false;
 }
 
-void print_table(mtable table) 
+void print_table(mtable table)
 {
-	for (int i = 0; i < 10; i++) 
+	for (int i = 0; i < 10; i++)
 	{
-		printf("table[%d] = %s\n",i , _strrev(bint_to_string(table.values[i])));
+		printf("table[%d] = %s\n", i, _strrev(bint_to_string(table.values[i])));
 	}
 }
