@@ -3,15 +3,15 @@
 
 BigInteger list_to_big_int(List* list, Sign sign)
 {
-	BigInteger bigint;
+	bint bigint;
 	bigint.list = list;
 	bigint.sign = sign;
 	return bigint;
 }
 
-BigInteger string_to_big_int(char* string) 
+BigInteger string_to_bint(char* string) 
 {
-	BigInteger bigint;
+	bint bigint;
 	if (string[0] == '-')
 	{
 		bigint.sign = negative;
@@ -25,7 +25,7 @@ BigInteger string_to_big_int(char* string)
 	return bigint;
 }
 
-char* big_Integer_to_string(BigInteger biginteger)
+char* big_integer_to_string(BigInteger biginteger)
 {
 	if (biginteger.sign == positive)
 	return list_to_string(biginteger.list, 0);
@@ -33,7 +33,7 @@ char* big_Integer_to_string(BigInteger biginteger)
 }
 
 
-BigInteger Add(BigInteger a, BigInteger b) 
+BigInteger bint_add(BigInteger a, BigInteger b) 
 {
 	Sign s;
 	if (a.sign == positive && b.sign == positive)
@@ -41,8 +41,8 @@ BigInteger Add(BigInteger a, BigInteger b)
 	else if (b.sign == negative && a.sign == negative)
 		s = negative;
 	else if (a.sign == negative)
-		return Subtract(b, a);
-	else return Subtract (a, b);
+		return bint_sub(b, a);
+	else return bint_sub (a, b);
 
 	List* result = create_list(0);
 	List *shorter, *longer;
@@ -80,4 +80,8 @@ BigInteger Add(BigInteger a, BigInteger b)
 		push_front(result, (char)carry);
 	}
 	return list_to_big_int(result, s);
+}
+BigInteger bint_sub(BigInteger a, BigInteger b) 
+{
+	return string_to_bint("0");
 }

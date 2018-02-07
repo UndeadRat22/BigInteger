@@ -1,5 +1,7 @@
 #include "List.h"
 
+#define bint BigInteger
+
 typedef enum Sign{
 	positive = 0,
 	negative = 1,
@@ -12,8 +14,10 @@ typedef struct BigInteger
 } BigInteger;
 
 
-BigInteger string_to_big_int(char* );
-char* big_Integer_to_string(BigInteger);
+BigInteger string_to_bint(char* );
+char* big_integer_to_string(BigInteger);
 
-BigInteger Add(BigInteger a, BigInteger b);			/* a + b*/
-BigInteger Subtract(BigInteger a, BigInteger b);	/* a - b*/
+BigInteger bint_add(BigInteger a, BigInteger b);	/* a + b*/
+BigInteger bint_sub(BigInteger a, BigInteger b);	/* a - b*/
+BigInteger bint_mul(BigInteger a, BigInteger b);	/* a * b*/
+BigInteger bint_div(BigInteger a, BigInteger b);	/* a / b*/
