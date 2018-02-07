@@ -197,3 +197,23 @@ List* get_shorter(List* a, List* b, int* lenght)
 	*lenght = MIN(a->count, b->count);
 	return (b->count == *lenght) ? b : a;
 }
+
+List* reverse_list(List *list)
+{
+	if (list == NULL || list->HEAD == NULL)
+	{
+		print_error(LIST_EMPTY_EXCEPTION);
+		return list;
+	}
+	Node* head = list->HEAD;
+	Node* new_head = NULL;
+	while (head)
+	{
+		Node* next = head->next;
+		head->next = new_head;
+		new_head = head;
+		head = next;
+	}
+	list->HEAD = head;
+	return list;
+}

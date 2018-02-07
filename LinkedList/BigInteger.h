@@ -21,8 +21,9 @@ typedef struct MultiplicationTable
 } MultiplicationTable;
 
 
-bint string_to_bint(char* );
-char* bint_to_string(bint);
+bint bint_cpy(bint);			/*copies a given integer to a new memory location, does not delete the old one*/
+bint string_to_bint(char* );	/*converts an ascii string to a big integer*/
+char* bint_to_string(bint);		/*converts a big integer to an ascii string*/
 
 bint bint_add(bint, bint);	/* a + b*/
 bint bint_sub(bint, bint);	/* a - b*/

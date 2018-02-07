@@ -40,3 +40,4 @@ void free_list(List*);                              /* free memory and dissolve 
 void print_error(ErrorCode code);					/*prints error according the the error code*/
 List* get_longer(List* a, List* b, int* lenght);	/*returns the longer list of the two and it's lenght*/
 List* get_shorter(List* a, List* b, int* lenght);	/*returns the shorter list of the two and it's lenght*/
+List* reverse_list(List *list);
