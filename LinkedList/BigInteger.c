@@ -1,7 +1,7 @@
 #include "BigInteger.h"
 #include <stdio.h>
 
-BigInteger list_to_big_int(List* list, Sign sign)
+bint list_to_bint(List* list, Sign sign)
 {
 	bint bigint;
 	bigint.list = list;
@@ -9,7 +9,7 @@ BigInteger list_to_big_int(List* list, Sign sign)
 	return bigint;
 }
 
-BigInteger string_to_bint(char* string) 
+bint string_to_bint(char* string)
 {
 	bint bigint;
 	if (string[0] == '-')
@@ -25,7 +25,7 @@ BigInteger string_to_bint(char* string)
 	return bigint;
 }
 
-char* big_integer_to_string(BigInteger biginteger)
+char* big_integer_to_string(bint biginteger)
 {
 	if (biginteger.sign == positive)
 	return list_to_string(biginteger.list, 0);
@@ -33,7 +33,7 @@ char* big_integer_to_string(BigInteger biginteger)
 }
 
 
-BigInteger bint_add(BigInteger a, BigInteger b) 
+bint bint_add(bint a, bint b)
 {
 	Sign s;
 	if (a.sign == positive && b.sign == positive)
@@ -79,9 +79,41 @@ BigInteger bint_add(BigInteger a, BigInteger b)
 	{
 		push_front(result, (char)carry);
 	}
-	return list_to_big_int(result, s);
+	return list_to_bint(result, s);
 }
-BigInteger bint_sub(BigInteger a, BigInteger b) 
+bint bint_sub(bint a, bint b)
 {
 	return string_to_bint("0");
+}
+
+bint bint_mul(bint a, bint b)
+{
+	if (is_zero(a) || is_zero(b))
+		return string_to_bint("0");
+
+	Sign s = div_mult_sign(a.sign, b.sign);
+}
+
+
+
+int is_zero(bint val)
+{
+	Node* head = val.list->HEAD;
+	while (head)
+	{
+		if (head->data != 0)
+			return 0;
+		head = head->next;
+	}
+	return 1;
+}
+
+Sign div_mult_sign(Sign a, Sign b)
+{
+	a == b ? positive : negative;
+}
+
+mtable get_table(bint val)
+{
+	mtable table;
 }

@@ -21,7 +21,7 @@ typedef struct Node {
 typedef struct List {
 	Node *HEAD;
 	unsigned count;
-} List, BigInt;
+} List;
 
 List* string_to_list(char*, int start_index);						/*returns the specified string a list of chars*/
 List* create_list(unsigned int size);				/*creates a list of the specified size (can be zero)
