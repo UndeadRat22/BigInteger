@@ -90,8 +90,18 @@ bint bint_mul(bint a, bint b)
 {
 	if (is_zero(a) || is_zero(b))
 		return string_to_bint("0");
-
 	Sign s = div_mult_sign(a.sign, b.sign);
+	mtable t = get_table(a);
+	
+	bint val = {NULL, s};
+
+	int i;
+	for (i = 0; i < 10; i++) 
+	{
+
+	}
+
+	return val;
 }
 
 int is_zero(bint val)
@@ -108,7 +118,7 @@ int is_zero(bint val)
 
 Sign div_mult_sign(Sign a, Sign b)
 {
-	a == b ? positive : negative;
+	return a == b ? positive : negative;
 }
 
 mtable get_table(bint val)

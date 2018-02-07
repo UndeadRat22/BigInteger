@@ -11,6 +11,9 @@ void main()
 	print_table(get_table(b1));
 
 	printf("%s\n", bint_to_string(bint_add(b1, b2)));
+	List* new = list_cpy(b1.list);
+	printf("%s\n", list_to_string(b1.list, 0));
+	printf("%s\n", list_to_string(new, 0));
 
 	return;
 }

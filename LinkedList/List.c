@@ -14,7 +14,7 @@ List* string_to_list(char* str, int start_index)
 {
 	List* l = create_list(0);
 	int len = strlen(str);
-	if (str[len-1] == '\n') len--;
+	if (str[len - 1] == '\n') len--;
 	if (start_index >= len)
 		print_error(INDEX_OUT_OF_RANGE_EXCEPTION);
 	for (int i = start_index; i < len; i++)
@@ -22,6 +22,18 @@ List* string_to_list(char* str, int start_index)
 		print_error(push_front(l, str[i] - 0x30));
 	}
 	return l;
+}
+
+List* list_cpy(List* original)
+{
+	List* new_list = create_list(0);
+	Node* head = original->HEAD;
+	while (head)
+	{
+		push_back(new_list, head->data);
+		head = head->next;
+	}
+	return new_list;
 }
 
 int push_front(List *list, char data) {
