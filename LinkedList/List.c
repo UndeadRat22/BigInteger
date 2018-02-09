@@ -34,7 +34,7 @@ List* list_cpy(List* original)
 	return new_list;
 }
 
-int push_front(List *list, char data) {
+ErrorCode push_front(List *list, char data) {
 	Node *new = malloc(sizeof(Node));
 	if (!new) 
 		return OUT_OF_MEMORY_EXCEPTION;
@@ -45,7 +45,7 @@ int push_front(List *list, char data) {
 	return ALL_GOOD;
 }
 
-int push_back(List *list, char data) {
+ErrorCode push_back(List *list, char data) {
 	Node **HEAD = &(list->HEAD);
 	while (*HEAD)
 		HEAD = &(*HEAD)->next;
@@ -98,7 +98,7 @@ Node* get_by_index(List* list, int index)
 	return INDEX_OUT_OF_RANGE_EXCEPTION;
 }
 
-int insert(List *list, int index, char data) {
+ErrorCode insert(List *list, int index, char data) {
 	Node *new = NULL, **HEAD = &(list->HEAD);
 	int i = 0;
 	while (*HEAD && i != index - 1) {
@@ -115,7 +115,7 @@ int insert(List *list, int index, char data) {
 	return ALL_GOOD;
 }
 
-int delete_by_index(List *list, int index) {
+ErrorCode delete_by_index(List *list, int index) {
 	struct Node* tmp = NULL, **HEAD = &(list->HEAD);
 	int i = 0;
 	while (*HEAD && i != index - 1) {
@@ -149,6 +149,7 @@ char* list_to_string (List* list, char optional) {
 		i++;
 	}
 	str[i] = '\0';
+	list = reverse_list(list);
 	return str;
 }
 
@@ -166,14 +167,15 @@ void print_error(ErrorCode code)
 {
 	switch (code)
 	{
+	case DIVISION_BY_ZERO_EXCEPTION:
+		fprintf(stderr, "Cant divide by zero !\n");
+		break;
 	case OUT_OF_MEMORY_EXCEPTION:
 		fprintf(stderr, "Out of memory !\n");
 		exit(OUT_OF_MEMORY_EXCEPTION);
-
 	case LIST_EMPTY_EXCEPTION:
-		fprintf(stderr, "List Empty !\n");
+		fprintf(stderr, "Big integer is empty !\n");
 		break;
-
 	case INDEX_OUT_OF_RANGE_EXCEPTION:
 		fprintf(stderr, "Index out of range !\n");
 		break;
@@ -214,4 +216,12 @@ List* reverse_list(List *list)
 	}
 	list->HEAD = new_head;
 	return list;
+}
+
+void test(List *list) {
+	Node *head = list->HEAD;
+	while (head) {
+		printf("DATA: %d\n", head->data);
+		head = head->next;
+	}
 }

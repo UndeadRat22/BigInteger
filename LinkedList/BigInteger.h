@@ -5,11 +5,7 @@
 
 typedef enum {false, true} bool;
 
-typedef enum Sign
-{
-	positive = 0,
-	negative = 1,
-} Sign;
+typedef enum {positive = 0,	negative = 1} Sign;
 
 typedef struct BigInteger 
 {
@@ -31,11 +27,15 @@ bint bint_add(bint, bint);	/* a + b*/
 bint bint_sub(bint, bint);	/* a - b*/
 bint bint_mul(bint, bint);	/* a * b*/
 bint bint_div(bint, bint);	/* a / b*/
+bint bint_mod(bint, bint);
 mtable get_table(bint);		/* returns the big integer multiplied by 0, 1, 2, ... 9*/
-int is_zero(bint);						/* checks and returs 1 if the given bint is zero
+bool is_zero(bint);						/* checks and returs 1 if the given bint is zero
 												   else returns 0*/
 Sign div_mult_sign(Sign, Sign);					/*returns what sign should the new bint have when doing division or multiplication*/
 void print_table(mtable);	/*debug for table values*/
 /* logical operations */
-bool bint_equal(bint a, bint b);						/* true if |a| == |b| */
-bool bint_greater_than(bint a, bint b);					/* true if |a| > |b| */
+bool bint_equal(bint a, bint b);						/* true if a == b */
+bool bint_greater_than(bint a, bint b);					/* true if a > b */
+bool bint_lesser_than(bint a, bint b);					/* true if a < b */
+
+char* unsigned_to_string(unsigned a);
