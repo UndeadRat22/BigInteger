@@ -32,10 +32,11 @@ mtable get_table(bint);		/* returns the big integer multiplied by 0, 1, 2, ... 9
 bool is_zero(bint);						/* checks and returs 1 if the given bint is zero
 												   else returns 0*/
 Sign div_mult_sign(Sign, Sign);					/*returns what sign should the new bint have when doing division or multiplication*/
-void print_table(mtable);	/*debug for table values*/
+
 /* logical operations */
 bool bint_equal(bint a, bint b);						/* true if a == b */
 bool bint_greater_than(bint a, bint b);					/* true if a > b */
 bool bint_lesser_than(bint a, bint b);					/* true if a < b */
 
-char* unsigned_to_string(unsigned a);
+char* int_to_string(int a);
+void free_bint(bint);

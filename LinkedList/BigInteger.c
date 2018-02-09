@@ -110,11 +110,11 @@ bint bint_sub(bint a, bint b)
 		Node *head1 = a.list->HEAD, *head2 = b.list->HEAD;
 		while (head1) {
 			int tmp;
+			tmp = head2 ? head1->data - head2->data : head1->data;
 			if (carry) {
-				head1->data--;
+				tmp--;
 				carry = false;
 			}
-			tmp = head2 ? head1->data - head2->data : head1->data;
 			if (tmp < 0) {													/* skolinsimes */
 				carry = true;
 				tmp += 10;
@@ -125,7 +125,6 @@ bint bint_sub(bint a, bint b)
 				head2 = head2->next;
 			i++;
 		}
-
 		for (; i<a.list->count; i++) {
 			push_back(result.list, head1->data);
 			head1 = head1->next;
@@ -191,7 +190,7 @@ bint do_division(bint a, bint b, bool div) {
 		return string_to_bint("0");
 	}
 	Sign bs = b.sign;
-	unsigned i = 0;
+	int i = 0;
 	bint tmp = a, result = {create_list(0), positive};
 	tmp.sign = positive;
 	b.sign = positive;
@@ -200,7 +199,7 @@ bint do_division(bint a, bint b, bool div) {
 		i++;
 	}
 	if (div)
-		return (bint) {string_to_list(unsigned_to_string(i)), a.sign == bs ? positive : negative};
+		return (bint) {string_to_list(int_to_string(i)), a.sign == bs ? positive : negative};
 		else {
 			if (a.sign == negative)
 				tmp.sign = negative;
@@ -294,25 +293,36 @@ bool bint_lesser_than(bint a, bint b) {
 	return !(bint_greater_than(a,b) || bint_equal(a, b));
 }
 
-char* unsigned_to_string(unsigned a) {
-	unsigned tmp = a, digits=0, tmp2;
+char* int_to_string(int a) {
+	int tmp = a, digits=0;
+	bool negative = a < 0;
+	if (a == 0) {
+		char *arr = calloc(2, 1);
+		arr[0] = '0';
+		return arr;
+	}
 	while (tmp) {
 		tmp /= 10;
 		digits++;
 	}
 	tmp = a;
-	char *arr = calloc(digits+1, 1);
-	for (int i=digits-1; i>=0; i--) {
-		arr[i] = (char) (tmp % 10) + 0x30; 
+	char *arr = calloc(digits+1+negative, 1);
+	int i = digits-1, iki = 0;
+	if (negative) {
+		i++;
+		iki++;
+		arr[0] = '-';
+	}
+	for (; i>=iki; i--) {
+		char final = tmp % 10;
+		if (negative)
+			final *= -1;
+		arr[i] = (char) final + 0x30; 
 		tmp /= 10;
 	}
 	return arr;
 }
 
-void print_table(mtable table) 
-{
-	for (int i = 0; i < 10; i++) 
-	{
-		printf("table[%d] = %s\n",i , _strrev(bint_to_string(table.values[i])));
-	}
+void free_bint(bint a) {
+	free_list(a.list);
 }
