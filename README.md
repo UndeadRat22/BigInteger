@@ -1,7 +1,7 @@
 # BigInteger
 A project made for Vilnius University Algorithms and Data structures course.
 The goal was to be able to add very long integers, which you would not be able to store in an int or a long type.
-Made by Valdas Rakutis and Tomas Zaicevas.
+Made by **Valdas Rakutis** and **Tomas Zaicevas**.
 
 ![Preview](http://www.imageurl.ir/images/97980846007353350555.png)
 
